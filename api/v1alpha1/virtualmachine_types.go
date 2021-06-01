@@ -63,10 +63,9 @@ type NetworkInterfaceProviderReference struct {
 }
 
 // VirtualMachineNetworkInterface defines the properties of a network interface to attach to a VirtualMachine
-// instance.  A VirtualMachineNetworkInterface describes network interface configuration that is used by the
-// VirtualMachine controller when integrating the VirtualMachine into a VirtualNetwork.  Currently, only NSX-T
-// and vSphere Distributed Switch (VDS) type network integrations are supported using this VirtualMachineNetworkInterface
-// structure.
+// instance. A VirtualMachineNetworkInterface describes network interface configuration that is used by the
+// VirtualMachine controller when integrating the VirtualMachine into a virtual network. Currently, only NSX-T
+// and vSphere Distributed Switch (VDS) type network integrations are supported using this structure.
 type VirtualMachineNetworkInterface struct {
 	// NetworkType describes the type of VirtualNetwork that is referenced by the NetworkName.  Currently, the only
 	// supported NetworkTypes are "nsx-t" and "vsphere-distributed".
@@ -74,9 +73,9 @@ type VirtualMachineNetworkInterface struct {
 	NetworkType string `json:"networkType,omitempty"`
 
 	// NetworkName describes the name of an existing virtual network that this interface should be added to.
-	// For "nsx-t" NetworkType, this is the name of a pre-existing NSX-T VirtualNetwork. If unspecified,
+	// For "nsx-t" NetworkType, this is the name of a pre-existing NCP VirtualNetwork. If unspecified,
 	// the default network for the namespace will be used. For "vsphere-distributed" NetworkType, the
-	// NetworkName must be specified.
+	// NetworkName must be specified, and is the name of a pre-existing NetOperator Network.
 	// +optional
 	NetworkName string `json:"networkName,omitempty"`
 
@@ -89,6 +88,11 @@ type VirtualMachineNetworkInterface struct {
 	// associated with this network integration.  The default is "vmxnet3".
 	// +optional
 	EthernetCardType string `json:"ethernetCardType,omitempty"`
+
+	// DHCPv4 configures this network interface for IPv4 DHCP. The network described by the NetworkName field, or
+	// the namespace default if unspecified, must support DHCP.
+	// +optional
+	DHCPv4 bool `json:"dhcpV4,omitempty"`
 }
 
 // VirtualMachineMetadataTransport is used to indicate the transport used by VirtualMachineMetadata
